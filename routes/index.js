@@ -1,6 +1,7 @@
 import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
+import FilesController from '../controllers/FilesController';
 
 const express = require('express');
 
@@ -29,6 +30,10 @@ router.get('/disconnect', async (req, res) => {
 
 router.get('/users/me', async (req, res) => {
   await UsersController.prototype.getMe(req, res);
+});
+
+router.post('/files', async (req, res) => {
+  await FilesController.prototype.postUpload(req, res);
 });
 
 export default router;
