@@ -36,4 +36,12 @@ router.post('/files', async (req, res) => {
   await FilesController.prototype.postUpload(req, res);
 });
 
+router.get('/files/', async (req, res) => {
+  await FilesController.prototype.getIndex(req, res);
+});
+
+router.get('/files/:id', async (req, res) => {
+  await FilesController.prototype.getShow(req, res);
+});
+
 export default router;

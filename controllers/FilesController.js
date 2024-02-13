@@ -102,4 +102,52 @@ export default class FilesController {
       });
     }
   }
+
+  async getShow(req, res) {
+    const token = req.header('X-Token');
+    const userId = await redisClient.get(`auth_${token}`);
+
+    if (!userId) {
+      res.statusCode = 401;
+      res.send({ error: 'Unauthorized' });
+    }
+    const { fileId } = req.params.id;
+    const files = dbClient.db.collection('files');
+    const file = await files.findOne({ _id: ObjectId(fileId) });
+    
+    if (!file) {
+      res.statusCode = 404;
+      res.send({ error: 'Not found' });
+    } else {
+       res.send(file);
+    }
+  }
+
+  async getIndex(req, res) {
+    const token = req.header('X-Token');
+    const userId = await redisClient.get(`auth_${token}`);
+    if (!userId) {
+      res.statusCode = 401;
+      res.send({ error: 'Unauthorized' });
+    }
+    const { parentId, page } = req.query;
+    const filesCollection = dbClient.db.collection('files');
+    const folderFiles = await filesCollection.find({ parentId: parentId });
+    // Paginate
+    const start = parseInt(page) * 20;
+    const end = start + 19;
+    const sortedFiles = await folderFiles.sort({ _id: 1 }).toArray();
+    if (sortedFiles.length > 20) {
+      const payload = [];
+      let index = 0;
+      while ( start < sortedFiles.length && start <= end ) {
+        payload[index] = sortedFiles[start];
+        start += 1;
+        index += 1;
+      }
+      res.send(payload);
+    } else {
+      res.send(sortedFiles);
+    }
+  }
 }
