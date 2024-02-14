@@ -1,6 +1,8 @@
 import router from './routes/index.js';
+
 const express = require('express');
 const bodyParser = require('body-parser').urlencoded({extended: false});
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();

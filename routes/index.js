@@ -44,4 +44,16 @@ router.get('/files/:id', async (req, res) => {
   await FilesController.prototype.getShow(req, res);
 });
 
+router.put('/files/:id/publish', async (req, res) => {
+  await FilesController.prototype.putPublish(req, res);
+});
+
+router.put('/files/:id/unpublish', async (req, res) => {
+  await FilesController.prototype.putUnpublish(req, res);
+});
+
+router.get('/files/:id/data', async (req, res) => {
+  await FilesController.prototype.getFile(req, res);
+});
+
 export default router;
