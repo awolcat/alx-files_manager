@@ -35,6 +35,7 @@ export default class FilesController {
     }
     const {name, type, parentId = 0, isPublic = false, data = ''} = req.body;
     const allowedTypes = ['folder', 'file', 'image'];
+
     if (!name) {
       res.statusCode = 400;
       res.send({ error: 'Missing name' });

@@ -1,17 +1,19 @@
 import { createClient } from 'redis';
 import { promisify } from 'util';
+const util = require('util');
+
 
 class RedisClient {
   constructor() {
-    this.client = createClient();
-    this.client.on('error', (error) => {
-      console.log(error.message);
-    });
-    this.connected = true;
+    this.client = createClient()
+        .on('error', (error) => {
+          console.log(error.message);
+        });
   }
 
   isAlive() {
-    return this.connected || false;
+    const alAsync = promisify(this.client.PING).bind(this.client);
+    return (async () => { return await alAsync('PONG') === 'PONG' })();
   }
 
   async get(key) {
