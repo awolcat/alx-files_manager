@@ -7,7 +7,6 @@ const express = require('express');
 
 const router = express.Router();
 
-
 router.get('/status', (req, res) => {
   AppController.prototype.getStatus(req, res);
 });

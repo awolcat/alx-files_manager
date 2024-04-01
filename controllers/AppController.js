@@ -1,10 +1,7 @@
 import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
-const express = require('express');
-
 export default class AppController {
-
   getStatus(request, response) {
     const redis = redisClient.isAlive();
     const db = dbClient.isAlive();

@@ -15,18 +15,19 @@ export default class UsersController {
       res.statusCode = 400;
       res.send({ error: 'Missing password' });
     } else if (await dbClient.db.collection('users').findOne({ email })) {
+      res.statusCode = 400;
       res.send({ error: 'Already exist' });
     } else {
       const passwordSha = sha1(password);
       const users = await dbClient.db.collection('users');
       const newUser = await users.insertOne(
-        { email: email, password: passwordSha },
+        { email, passwordSha },
       );
       res.statusCode = 201;
       res.send(
         {
           id: newUser.insertedId,
-          email: email,
+          email,
         },
       );
     }
